@@ -6,6 +6,7 @@ import { StepTwo } from './steps/step-two'
 import { StepThree } from './steps/step-three'
 import { StepFour } from './steps/step-four'
 import { StepFive } from './steps/step-five'
+import { StepSix } from './steps/step-six'
 
 type Step = {
   id: number
@@ -98,7 +99,7 @@ export default function TransactionForm() {
       case 5:
         return <StepFive formData={formData} updateFormData={updateFormData} />
       case 6:
-        return <div>Step 6 content will go here</div>
+        return <StepSix formData={formData} updateFormData={updateFormData} />
       default:
         return null
     }
