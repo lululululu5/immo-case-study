@@ -343,23 +343,17 @@ export function StepThree({ formData, updateFormData }: StepThreeProps) {
                         <TableHead>Type</TableHead>
                         <TableHead>Related Task</TableHead>
                         <TableHead>Upload Date</TableHead>
-                        <TableHead className="w-[100px]">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {asset.documents.map(doc => (
                         <TableRow key={doc.id}>
-                          <TableCell className="flex items-center">
-                            <FileIcon className="h-4 w-4 mr-2" />
-                            {doc.name}
-                          </TableCell>
-                          <TableCell>{doc.type}</TableCell>
-                          <TableCell>
-                            {asset.tasks.find(task => task.id === doc.taskId)?.name}
-                          </TableCell>
-                          <TableCell>{format(new Date(doc.uploadDate), 'PP')}</TableCell>
-                          <TableCell>
-                            <div className="flex space-x-2">
+                          <TableCell className="flex items-center justify-between">
+                            <div className="flex items-center">
+                              <FileIcon className="h-4 w-4 mr-2" />
+                              {doc.name}
+                            </div>
+                            <div className="flex space-x-3">
                               <Button 
                                 variant="ghost" 
                                 size="icon"
@@ -375,6 +369,11 @@ export function StepThree({ formData, updateFormData }: StepThreeProps) {
                               </Button>
                             </div>
                           </TableCell>
+                          <TableCell>{doc.type}</TableCell>
+                          <TableCell>
+                            {asset.tasks.find(task => task.id === doc.taskId)?.name}
+                          </TableCell>
+                          <TableCell>{format(new Date(doc.uploadDate), 'PP')}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -391,7 +390,6 @@ export function StepThree({ formData, updateFormData }: StepThreeProps) {
                         <TableHead>Status</TableHead>
                         <TableHead>Assigned To</TableHead>
                         <TableHead>Due Date</TableHead>
-                        <TableHead>Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -465,19 +463,6 @@ export function StepThree({ formData, updateFormData }: StepThreeProps) {
                                 />
                               </PopoverContent>
                             </Popover>
-                          </TableCell>
-                          <TableCell>
-                            {task.status !== 'Completed' && (
-                              <Button
-                                variant="outline"
-                                onClick={() => {
-                                  setSelectedTask(task.id)
-                                  document.getElementById(`file-upload-${asset.id}`)?.click()
-                                }}
-                              >
-                                Upload Document
-                              </Button>
-                            )}
                           </TableCell>
                         </TableRow>
                       ))}

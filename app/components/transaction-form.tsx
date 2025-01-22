@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { StepOne } from './steps/step-one'
 import { StepTwo } from './steps/step-two'
 import { StepThree } from './steps/step-three'
+import { StepFour } from './steps/step-four'
 
 type Step = {
   id: number
@@ -92,7 +93,7 @@ export default function TransactionForm() {
       case 3:
         return <StepThree formData={formData} updateFormData={updateFormData} />
       case 4:
-        return <div>Step 4 content will go here</div>
+        return <StepFour formData={formData} updateFormData={updateFormData} />
       case 5:
         return <div>Step 5 content will go here</div>
       case 6:
