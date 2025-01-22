@@ -10,10 +10,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { PlusCircle, ArrowUpRight, Building2, Euro } from "lucide-react"
+import { PlusCircle } from "lucide-react"
 import Link from "next/link"
 
-// Mock data for transactions
+// Mock data for transactions (same as dashboard)
 const transactions = [
   {
     id: 1,
@@ -44,15 +44,11 @@ const transactions = [
   }
 ]
 
-export default function Home() {
-  const totalValue = transactions.reduce((sum, t) => sum + t.value, 0)
-  const totalAssets = transactions.reduce((sum, t) => sum + t.assets, 0)
-  const activeTransactions = transactions.filter(t => t.status !== 'Completed').length
-
+export default function TransactionsPage() {
   return (
     <div className="flex-1 space-y-6">
       <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+        <h2 className="text-3xl font-bold tracking-tight">Transactions</h2>
         <div className="flex items-center space-x-2">
           <Link href="/transactions/new">
             <Button>
@@ -63,56 +59,10 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Overview Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Transaction Value
-            </CardTitle>
-            <Euro className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">€{(totalValue / 1000000).toFixed(1)}M</div>
-            <p className="text-xs text-muted-foreground">
-              Across all transactions
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Assets
-            </CardTitle>
-            <Building2 className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalAssets}</div>
-            <p className="text-xs text-muted-foreground">
-              In all transactions
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Active Transactions
-            </CardTitle>
-            <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{activeTransactions}</div>
-            <p className="text-xs text-muted-foreground">
-              Currently in progress
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Recent Transactions */}
+      {/* Transactions List */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Transactions</CardTitle>
+          <CardTitle>All Transactions</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -160,4 +110,4 @@ export default function Home() {
       </Card>
     </div>
   )
-}
+} 
