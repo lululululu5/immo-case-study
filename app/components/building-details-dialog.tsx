@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Home, ChevronRight, Building2, DoorOpen } from "lucide-react"
+import { useState } from "react"
+import { EstateDetailsDialog } from "./estate-details-dialog"
 
 type Estate = {
   id: string
@@ -85,7 +87,7 @@ type Building = {
   estates: Estate[]
 }
 
-// Mock data for a building with estates
+// Update the mock data with more estates
 const mockBuildingData: Building = {
   id: "b1",
   name: "Bergmannstraße Building",
@@ -149,7 +151,111 @@ const mockBuildingData: Building = {
       turnover_costs: 2800,
       unit_condition: "excellent"
     },
-    // Add more estates...
+    {
+      id: "e2",
+      unit_number: "102",
+      type: "apartment",
+      size: 65.0,
+      current_rent: 1200,
+      occupancy_status: "occupied",
+      picture_urls: ["url1", "url2"],
+      tenant_profile: {
+        tenant_type: "Single",
+        lease_start: "2023-01-01",
+        lease_duration: 12
+      },
+      lease_terms: {
+        monthly_rent: 1200,
+        security_deposit: 3600,
+        payment_terms: "Due by 5th of each month"
+      },
+      turnover_costs: 2200,
+      unit_condition: "good"
+    },
+    {
+      id: "e3",
+      unit_number: "201",
+      type: "apartment",
+      size: 92.0,
+      current_rent: 1650,
+      occupancy_status: "vacant",
+      picture_urls: ["url1", "url2"],
+      tenant_profile: {
+        tenant_type: "Previous: Family",
+        lease_start: "2021-03-01",
+        lease_duration: 24
+      },
+      lease_terms: {
+        monthly_rent: 1650,
+        security_deposit: 4950,
+        payment_terms: "Due by 3rd of each month"
+      },
+      turnover_costs: 3100,
+      unit_condition: "needs repair"
+    },
+    {
+      id: "e4",
+      unit_number: "202",
+      type: "apartment",
+      size: 78.5,
+      current_rent: 1350,
+      occupancy_status: "occupied",
+      picture_urls: ["url1", "url2"],
+      tenant_profile: {
+        tenant_type: "Couple",
+        lease_start: "2023-09-01",
+        lease_duration: 24
+      },
+      lease_terms: {
+        monthly_rent: 1350,
+        security_deposit: 4050,
+        payment_terms: "Due by 3rd of each month"
+      },
+      turnover_costs: 2500,
+      unit_condition: "good"
+    },
+    {
+      id: "e5",
+      unit_number: "G01",
+      type: "commercial",
+      size: 120.0,
+      current_rent: 2800,
+      occupancy_status: "occupied",
+      picture_urls: ["url1", "url2"],
+      tenant_profile: {
+        tenant_type: "Retail Store",
+        lease_start: "2022-01-01",
+        lease_duration: 60
+      },
+      lease_terms: {
+        monthly_rent: 2800,
+        security_deposit: 8400,
+        payment_terms: "Due by 1st of each month"
+      },
+      turnover_costs: 5000,
+      unit_condition: "excellent"
+    },
+    {
+      id: "e6",
+      unit_number: "G02",
+      type: "commercial",
+      size: 95.0,
+      current_rent: 2200,
+      occupancy_status: "occupied",
+      picture_urls: ["url1", "url2"],
+      tenant_profile: {
+        tenant_type: "Office",
+        lease_start: "2023-06-01",
+        lease_duration: 36
+      },
+      lease_terms: {
+        monthly_rent: 2200,
+        security_deposit: 6600,
+        payment_terms: "Due by 1st of each month"
+      },
+      turnover_costs: 4200,
+      unit_condition: "good"
+    }
   ]
 }
 
@@ -166,6 +272,9 @@ export function BuildingDetailsDialog({
 }: BuildingDetailsDialogProps) {
   // In a real application, we would fetch the building data based on the buildingId
   const building = mockBuildingData
+  const [selectedEstateId, setSelectedEstateId] = useState<string | null>(null)
+
+
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -220,7 +329,7 @@ export function BuildingDetailsDialog({
                   <p className="text-lg font-semibold capitalize">{building.type}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Sustainability Certification</p>
+                  <p className="text-sm text-muted-foreground">Sustainability Certification (LEED)</p>
                   <p className="text-lg font-semibold">{building.sustainability_certification}</p>
                 </div>
                 <div>
@@ -315,10 +424,17 @@ export function BuildingDetailsDialog({
                 <TableBody>
                   {building.estates.map((estate) => (
                     <TableRow key={estate.id}>
-                      <TableCell className="font-medium">{estate.unit_number}</TableCell>
+                      <TableCell className="font-medium">
+                        <button
+                          onClick={() => setSelectedEstateId(estate.id)}
+                          className="text-left hover:underline text-blue-600"
+                        >
+                          {estate.unit_number}
+                        </button>
+                      </TableCell>
                       <TableCell className="capitalize">{estate.type}</TableCell>
                       <TableCell>{estate.size}</TableCell>
-                      <TableCell>€{estate.current_rent}</TableCell>
+                      <TableCell>€{estate.current_rent.toLocaleString()}</TableCell>
                       <TableCell>
                         <Badge className={`
                           ${estate.occupancy_status === 'occupied' ? 'bg-green-100 text-green-800' : 
@@ -339,6 +455,13 @@ export function BuildingDetailsDialog({
             </CardContent>
           </Card>
         </div>
+        {selectedEstateId && (
+        <EstateDetailsDialog
+            isOpen={selectedEstateId !== null}
+            onClose={() => setSelectedEstateId(null)}
+            estateId={selectedEstateId}
+        />
+        )}
       </DialogContent>
     </Dialog>
   )
