@@ -22,8 +22,8 @@ const steps: Step[] = [
   },
   {
     id: 2,
-    title: "Screen Assets",
-    description: "Add and screen market opportunities"
+    title: "Select Assets",
+    description: "Add and screen assets"
   },
   {
     id: 3,
