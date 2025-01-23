@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/accordion"
 import { format } from "date-fns"
 import { AssetDetailsDialog } from '../asset-details-dialog'
+import { AssetUploadDialog } from '../asset-upload-dialog'
 
 type StepTwoProps = {
   formData: any
@@ -118,6 +119,7 @@ export function StepTwo({ formData, updateFormData }: StepTwoProps) {
     energyEfficiency: { min: "50", max: "100" }
   })
   const [selectedAssetForDialog, setSelectedAssetForDialog] = useState<number | null>(null)
+  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
 
   // Calculate total value and average ROI from selected assets
   const selectedAssetsData = formData.selectedAssets || []
@@ -146,19 +148,7 @@ export function StepTwo({ formData, updateFormData }: StepTwoProps) {
   }
 
   const handleFileUpload = () => {
-    const mockUploadedAsset = {
-      id: assets.length + 1,
-      name: "Uploaded Property Complex",
-      location: "Berlin, Germany",
-      type: "Multi Family Home",
-      decarbonization: "Medium",
-      decarbonization_score: 75.0,
-      portfolio_value: 2200000,
-      roi: 8.9,
-      liquidity_rating: "medium",
-      source: "Manually Uploaded"
-    }
-    setAssets([...assets, mockUploadedAsset])
+    setIsUploadDialogOpen(true)
   }
 
   const handleCriteriaChange = (
@@ -504,6 +494,15 @@ export function StepTwo({ formData, updateFormData }: StepTwoProps) {
         isOpen={selectedAssetForDialog !== null}
         onClose={() => setSelectedAssetForDialog(null)}
         assetId={selectedAssetForDialog || 0}
+      />
+
+      {/* Asset Upload Dialog */}
+      <AssetUploadDialog
+        isOpen={isUploadDialogOpen}
+        onClose={() => setIsUploadDialogOpen(false)}
+        onAssetAdd={(asset) => {
+          setAssets([...assets, asset])
+        }}
       />
     </div>
   )
