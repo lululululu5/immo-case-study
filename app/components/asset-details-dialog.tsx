@@ -23,6 +23,8 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Building, ChevronRight, Home } from "lucide-react"
+import { useState } from "react"
+import { BuildingDetailsDialog } from "./building-details-dialog"
 
 // Types for our data structures
 type Building = {
@@ -260,6 +262,9 @@ export function AssetDetailsDialog({
   // In a real application, we would fetch the asset data based on the assetId
   const asset = mockAssetData
 
+  // Add state for selected building
+  const [selectedBuildingId, setSelectedBuildingId] = useState<string | null>(null)
+
   const getLiquidityColor = (rating: string) => {
     switch (rating) {
       case 'high':
@@ -385,7 +390,14 @@ export function AssetDetailsDialog({
                 <TableBody>
                   {asset.buildings.map((building) => (
                     <TableRow key={building.id}>
-                      <TableCell className="font-medium">{building.name}</TableCell>
+                      <TableCell className="font-medium">
+                        <button
+                          onClick={() => setSelectedBuildingId(building.id)}
+                          className="text-left hover:underline text-blue-600"
+                        >
+                          {building.name}
+                        </button>
+                      </TableCell>
                       <TableCell>{building.construction_year}</TableCell>
                       <TableCell>
                         <Badge variant="outline">{building.energy_efficiency_rating}</Badge>
@@ -402,6 +414,15 @@ export function AssetDetailsDialog({
             </CardContent>
           </Card>
         </div>
+
+        {/* BuildingDetailsDialog component */}
+        {selectedBuildingId && (
+          <BuildingDetailsDialog
+            isOpen={selectedBuildingId !== null}
+            onClose={() => setSelectedBuildingId(null)}
+            buildingId={selectedBuildingId}
+          />
+        )}
       </DialogContent>
     </Dialog>
   )
