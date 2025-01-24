@@ -49,7 +49,8 @@ const mockAssets = [
     portfolio_value: 2500000,
     roi: 9.2,
     liquidity_rating: "high",
-    source: "Screening"
+    source: "Screening",
+    matching_score: 92
   },
   {
     id: 2,
@@ -61,7 +62,8 @@ const mockAssets = [
     portfolio_value: 1800000,
     roi: 8.5,
     liquidity_rating: "medium",
-    source: "Screening"
+    source: "Screening",
+    matching_score: 78
   },
   {
     id: 3,
@@ -73,7 +75,8 @@ const mockAssets = [
     portfolio_value: 3200000,
     roi: 10.1,
     liquidity_rating: "medium",
-    source: "Screening"
+    source: "Screening",
+    matching_score: 85
   },
   {
     id: 4,
@@ -85,7 +88,8 @@ const mockAssets = [
     portfolio_value: 4100000,
     roi: 7.8,
     liquidity_rating: "high",
-    source: "Screening"
+    source: "Screening",
+    matching_score: 71
   },
   {
     id: 5,
@@ -97,7 +101,8 @@ const mockAssets = [
     portfolio_value: 2900000,
     roi: 9.7,
     liquidity_rating: "low",
-    source: "Screening"
+    source: "Screening",
+    matching_score: 88
   },
 ]
 
@@ -433,6 +438,7 @@ export function StepTwo({ formData, updateFormData }: StepTwoProps) {
                 <TableHead>Decarbonization</TableHead>
                 <TableHead>Liquidity</TableHead>
                 <TableHead>Source</TableHead>
+                <TableHead>Matching Score</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -457,31 +463,27 @@ export function StepTwo({ formData, updateFormData }: StepTwoProps) {
                   <TableCell>€{asset.portfolio_value.toLocaleString()}</TableCell>
                   <TableCell>{asset.roi}%</TableCell>
                   <TableCell>
-                    <div className="flex flex-col">
-                      <span className={`px-2 py-1 rounded text-sm ${
-                        asset.decarbonization === 'High' 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {asset.decarbonization}
-                      </span>
-                      <span className="text-xs text-muted-foreground mt-1">
-                        Score: {asset.decarbonization_score}
-                      </span>
-                    </div>
+                    <span className="px-2 py-1 rounded text-sm">
+                      {asset.decarbonization_score}%
+                    </span>
                   </TableCell>
                   <TableCell>
-                    <span className={`px-2 py-1 rounded text-sm ${
-                      asset.liquidity_rating === 'high' 
-                        ? 'bg-green-100 text-green-800' 
-                        : asset.liquidity_rating === 'medium'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-red-100 text-red-800'
-                    }`}>
+                    <span className="px-2 py-1 rounded text-sm">
                       {asset.liquidity_rating.charAt(0).toUpperCase() + asset.liquidity_rating.slice(1)}
                     </span>
                   </TableCell>
                   <TableCell>{asset.source}</TableCell>
+                  <TableCell>
+                    <span className={`px-2 py-1 rounded text-sm ${
+                      asset.matching_score >= 85 
+                        ? 'bg-green-100 text-green-800' 
+                        : asset.matching_score >= 70
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {asset.matching_score}%
+                    </span>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
