@@ -152,6 +152,17 @@ export function StepTwo({ formData, updateFormData }: StepTwoProps) {
     setSelectedAssets([])
   }
 
+  const isAssetInTransaction = (assetId: number) => {
+    return formData.selectedAssets?.some((asset: any) => asset.id === assetId) || false
+  }
+
+  const handleRemoveFromTransaction = (assetId: number) => {
+    updateFormData({
+      ...formData,
+      selectedAssets: formData.selectedAssets.filter((asset: any) => asset.id !== assetId)
+    })
+  }
+
   const handleFileUpload = () => {
     setIsUploadDialogOpen(true)
   }
@@ -429,7 +440,7 @@ export function StepTwo({ formData, updateFormData }: StepTwoProps) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-12"></TableHead>
+                <TableHead className="w-[150px]">Actions</TableHead>
                 <TableHead>Asset Name</TableHead>
                 <TableHead>Location</TableHead>
                 <TableHead>Type</TableHead>
@@ -444,11 +455,22 @@ export function StepTwo({ formData, updateFormData }: StepTwoProps) {
             <TableBody>
               {assets.map((asset) => (
                 <TableRow key={asset.id}>
-                  <TableCell>
-                    <Checkbox
-                      checked={selectedAssets.includes(asset.id)}
-                      onCheckedChange={() => handleAssetSelect(asset.id)}
-                    />
+                  <TableCell className="flex items-center gap-2">
+                    {isAssetInTransaction(asset.id) ? (
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleRemoveFromTransaction(asset.id)}
+                      >
+                        Remove
+                      </Button>
+                    ) : (
+                      <Checkbox
+                        checked={selectedAssets.includes(asset.id)}
+                        onCheckedChange={() => handleAssetSelect(asset.id)}
+                        disabled={isAssetInTransaction(asset.id)}
+                      />
+                    )}
                   </TableCell>
                   <TableCell>
                     <button
