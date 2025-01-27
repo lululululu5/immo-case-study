@@ -28,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { TransactionInfoBar } from "../transaction-info-bar"
 
 type StepOneProps = {
   formData: any
@@ -62,67 +63,7 @@ export function StepOne({ formData, updateFormData }: StepOneProps) {
 
   return (
     <div className="space-y-6">
-      {/* Transaction Information Box */}
-      <Accordion type="single" collapsible defaultValue="item-1">
-        <AccordionItem value="item-1">
-          <AccordionTrigger className="hover:no-underline">
-            <h3 className="text-lg font-semibold">Transaction Information</h3>
-          </AccordionTrigger>
-          <AccordionContent>
-            <div className="grid grid-cols-2 gap-4 text-sm pt-2">
-              {/* Basic Information */}
-              <div>
-                <span className="text-muted-foreground">Type:</span>
-                <span className="ml-2 font-medium">{formData.transactionType || 'Not set'}</span>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Status:</span>
-                <span className="ml-2 font-medium">Pending</span>
-              </div>
-              
-              {/* Dates */}
-              <div>
-                <span className="text-muted-foreground">Date Initiated:</span>
-                <span className="ml-2 font-medium">{formData.transactionDate ? format(new Date(formData.transactionDate), 'PP') : 'Not set'}</span>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Date Closed:</span>
-                <span className="ml-2 font-medium text-muted-foreground">Not available</span>
-              </div>
-              
-              {/* Financial Information */}
-              <div>
-                <span className="text-muted-foreground">Budget:</span>
-                <span className="ml-2 font-medium">{formData.budget || 'Not set'}</span>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Total Value:</span>
-                <span className="ml-2 font-medium text-muted-foreground">Not available</span>
-              </div>
-              
-              {/* Risk and Returns */}
-              <div>
-                <span className="text-muted-foreground">Expected ROI:</span>
-                <span className="ml-2 font-medium text-muted-foreground">Not available</span>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Transaction Risk:</span>
-                <span className="ml-2 font-medium text-muted-foreground">Not available</span>
-              </div>
-              
-              {/* Strategic Information */}
-              <div className="col-span-2">
-                <span className="text-muted-foreground">Strategic Goal:</span>
-                <span className="ml-2 font-medium">{formData.strategic_goal_alignment || 'Not set'}</span>
-              </div>
-              <div className="col-span-2">
-                <span className="text-muted-foreground">Market Conditions:</span>
-                <span className="ml-2 font-medium text-muted-foreground">Not available</span>
-              </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      <TransactionInfoBar step={1} formData={formData} />
 
       {/* Main Form */}
       <Card>

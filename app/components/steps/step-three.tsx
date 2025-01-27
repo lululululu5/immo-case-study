@@ -55,6 +55,7 @@ import {
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
+import { TransactionInfoBar } from "../transaction-info-bar"
 
 type Document = {
   id: string
@@ -251,6 +252,8 @@ export function StepThree({ formData, updateFormData }: StepThreeProps) {
 
   return (
     <div className="space-y-6">
+      <TransactionInfoBar step={3} formData={formData} />
+      
       <Accordion type="single" collapsible className="w-full">
         {assets.map(asset => {
           const progress = calculateProgress(asset)

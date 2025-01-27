@@ -24,6 +24,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { FileText, CheckCircle2, AlertCircle, Clock, Download } from "lucide-react"
+import { TransactionInfoBar } from "../transaction-info-bar"
 
 type Asset = {
   id: number
@@ -101,6 +102,8 @@ export function StepSix({ formData, updateFormData }: StepSixProps) {
 
   return (
     <div className="space-y-6">
+      <TransactionInfoBar step={6} formData={formData} />
+      
       {/* Transaction Status */}
       <Card>
         <CardContent className="pt-6">

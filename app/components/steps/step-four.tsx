@@ -34,6 +34,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { TransactionInfoBar } from "../transaction-info-bar"
 
 type Asset = {
   id: number
@@ -128,6 +129,8 @@ export function StepFour({ formData, updateFormData }: StepFourProps) {
 
   return (
     <div className="space-y-6">
+      <TransactionInfoBar step={4} formData={formData} />
+      
       {/* Portfolio Summary Card */}
       <Card>
         <CardContent className="pt-6">

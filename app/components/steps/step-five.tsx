@@ -28,6 +28,7 @@ import {
 import { format } from "date-fns"
 import { CircleDot, Download, FileText, CheckCircle, Clock, XCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { TransactionInfoBar } from "../transaction-info-bar"
 
 type Asset = {
   id: number
@@ -141,6 +142,8 @@ export function StepFive({ formData, updateFormData }: StepFiveProps) {
 
   return (
     <div className="space-y-6">
+      <TransactionInfoBar step={5} formData={formData} />
+      
       {/* Transaction Summary */}
       <Card>
         <CardContent className="pt-6">
