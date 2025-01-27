@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { PlusCircle } from "lucide-react"
+import { PlusCircle, TrendingUp, Building2, Clock, Euro } from "lucide-react"
 import Link from "next/link"
 
 // Mock data for transactions (same as dashboard)
@@ -44,6 +44,13 @@ const transactions = [
   }
 ]
 
+// Calculate summary statistics
+const totalValue = transactions.reduce((sum, t) => sum + t.value, 0)
+const totalAssets = transactions.reduce((sum, t) => sum + t.assets, 0)
+const avgTransactionValue = totalValue / transactions.length
+const completedTransactions = transactions.filter(t => t.status === "Completed").length
+const inProgressTransactions = transactions.filter(t => t.status === "In Progress" || t.status === "Initiated").length
+
 export default function TransactionsPage() {
   return (
     <div className="flex-1 space-y-6">
@@ -57,6 +64,55 @@ export default function TransactionsPage() {
             </Button>
           </Link>
         </div>
+      </div>
+
+      {/* Summary Statistics */}
+      <div className="grid grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Pipeline Value</p>
+                <div className="text-2xl font-bold">€{(totalValue / 1000000).toFixed(1)}M</div>
+              </div>
+              <Euro className="h-8 w-8 text-muted-foreground" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Average Deal Size</p>
+                <div className="text-2xl font-bold">€{(avgTransactionValue / 1000000).toFixed(1)}M</div>
+              </div>
+              <TrendingUp className="h-8 w-8 text-muted-foreground" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Assets</p>
+                <div className="text-2xl font-bold">{totalAssets}</div>
+              </div>
+              <Building2 className="h-8 w-8 text-muted-foreground" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Active Deals</p>
+                <div className="text-2xl font-bold">{inProgressTransactions}</div>
+                <p className="text-xs text-muted-foreground mt-1">{completedTransactions} completed</p>
+              </div>
+              <Clock className="h-8 w-8 text-muted-foreground" />
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Transactions List */}
@@ -82,7 +138,7 @@ export default function TransactionsPage() {
                   <TableCell className="font-medium">
                     <Link 
                       href={`/transactions/${transaction.id}`}
-                      className="hover:underline"
+                      className="text-blue-600 hover:underline"
                     >
                       {transaction.name}
                     </Link>
