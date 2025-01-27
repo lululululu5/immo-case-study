@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Home, ChevronRight, Building2, DoorOpen, Users, Calendar, Euro } from "lucide-react"
+import Image from "next/image"
 
 type TenantProfile = {
   tenant_type: string
@@ -51,6 +52,8 @@ type Estate = {
   lease_terms: LeaseTerms
   turnover_costs: number
   unit_condition: 'excellent' | 'good' | 'needs repair'
+  name: string
+  image: string
 }
 
 // Mock data for a single estate
@@ -98,7 +101,9 @@ const mockEstateData: Estate = {
     ]
   },
   turnover_costs: 2800,
-  unit_condition: "excellent"
+  unit_condition: "excellent",
+  name: "Estate A",
+  image: "/mfh_estate_interior.jpg"
 }
 
 interface EstateDetailsDialogProps {
@@ -153,6 +158,19 @@ export function EstateDetailsDialog({
             Unit {estate.unit_number} - {estate.type.charAt(0).toUpperCase() + estate.type.slice(1)}
           </DialogTitle>
         </DialogHeader>
+
+        {/* Add image at the top */}
+        <div className="relative w-full h-[300px] mb-6">
+          <Image
+            src={estate.image}
+            alt={estate.name}
+            fill
+            quality={100}
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover rounded-lg"
+          />
+        </div>
 
         <div className="space-y-6">
           {/* Key Metrics */}

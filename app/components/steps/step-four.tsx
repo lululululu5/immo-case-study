@@ -35,6 +35,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { TransactionInfoBar } from "../transaction-info-bar"
+import { AssetDetailsDialog } from '../asset-details-dialog'
 
 type Asset = {
   id: number
@@ -100,6 +101,7 @@ export function StepFour({ formData, updateFormData }: StepFourProps) {
     energySavings: 30,
     carbonReduction: 50
   })
+  const [selectedAssetForDialog, setSelectedAssetForDialog] = useState<number | null>(null)
 
   const scatterData = generateScatterData(assets)
   
@@ -305,7 +307,14 @@ export function StepFour({ formData, updateFormData }: StepFourProps) {
             <TableBody>
               {assets.map((asset) => (
                 <TableRow key={asset.id}>
-                  <TableCell>{asset.name}</TableCell>
+                  <TableCell>
+                    <button
+                      onClick={() => setSelectedAssetForDialog(asset.id)}
+                      className="text-left hover:underline text-blue-600"
+                    >
+                      {asset.name}
+                    </button>
+                  </TableCell>
                   <TableCell className="flex items-center space-x-2">
                     {getRiskIcon(asset.riskLevel)}
                     <span>{asset.riskLevel}</span>
@@ -432,6 +441,13 @@ export function StepFour({ formData, updateFormData }: StepFourProps) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Asset Details Dialog */}
+      <AssetDetailsDialog
+        isOpen={selectedAssetForDialog !== null}
+        onClose={() => setSelectedAssetForDialog(null)}
+        assetId={selectedAssetForDialog || 0}
+      />
     </div>
   )
 } 

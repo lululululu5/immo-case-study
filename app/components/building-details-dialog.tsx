@@ -24,6 +24,7 @@ import { Badge } from "@/components/ui/badge"
 import { Home, ChevronRight, Building2, DoorOpen } from "lucide-react"
 import { useState } from "react"
 import { EstateDetailsDialog } from "./estate-details-dialog"
+import Image from "next/image"
 
 type Estate = {
   id: string
@@ -85,6 +86,7 @@ type Building = {
     crime_rate: 'low' | 'medium' | 'high'
   }
   estates: Estate[]
+  image: string
 }
 
 // Update the mock data with more estates
@@ -256,7 +258,8 @@ const mockBuildingData: Building = {
       turnover_costs: 4200,
       unit_condition: "good"
     }
-  ]
+  ],
+  image: "/mfh_building.jpg"
 }
 
 interface BuildingDetailsDialogProps {
@@ -274,8 +277,6 @@ export function BuildingDetailsDialog({
   const building = mockBuildingData
   const [selectedEstateId, setSelectedEstateId] = useState<string | null>(null)
 
-
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto fixed z-[110]">
@@ -291,6 +292,18 @@ export function BuildingDetailsDialog({
           </div>
           <DialogTitle className="text-xl font-semibold pt-2">{building.name}</DialogTitle>
         </DialogHeader>
+
+        <div className="relative w-full h-[300px] mb-6">
+          <Image
+            src={building.image}
+            alt={building.name}
+            fill
+            quality={100}
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover rounded-lg"
+          />
+        </div>
 
         <div className="space-y-6">
           {/* Key Metrics */}
