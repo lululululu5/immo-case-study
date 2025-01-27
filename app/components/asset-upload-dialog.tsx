@@ -118,7 +118,21 @@ export function AssetUploadDialog({
   }
 
   const handleAddAssets = () => {
-    previewAssets.forEach(asset => onAssetAdd(asset))
+    // Create a new mock asset with manual source
+    const newAsset = {
+      id: Date.now(), // Use timestamp as unique ID
+      name: "Moabit Apartments",
+      location: "Berlin, Germany",
+      type: "Multi Family Home",
+      decarbonization: "Medium",
+      decarbonization_score: 75.5,
+      portfolio_value: 2100000,
+      roi: 8.7,
+      liquidity_rating: "medium",
+      source: "Manual",
+      matching_score: 82
+    }
+    onAssetAdd(newAsset)
     onClose()
   }
 

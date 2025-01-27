@@ -503,7 +503,8 @@ export function StepTwo({ formData, updateFormData }: StepTwoProps) {
         isOpen={isUploadDialogOpen}
         onClose={() => setIsUploadDialogOpen(false)}
         onAssetAdd={(asset) => {
-          setAssets([...assets, asset])
+          setAssets(prevAssets => [...prevAssets, asset])
+          setSelectedAssets(prev => [...prev, asset.id])
         }}
       />
     </div>
