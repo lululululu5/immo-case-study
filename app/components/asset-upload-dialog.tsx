@@ -568,6 +568,7 @@ export function AssetUploadDialog({
                       <TableHead>ROI</TableHead>
                       <TableHead>Decarbonization</TableHead>
                       <TableHead>Liquidity</TableHead>
+                      <TableHead>Source</TableHead>
                       <TableHead>Matching Score</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -579,31 +580,9 @@ export function AssetUploadDialog({
                         <TableCell>{asset.type}</TableCell>
                         <TableCell>€{asset.portfolio_value.toLocaleString()}</TableCell>
                         <TableCell>{asset.roi}%</TableCell>
-                        <TableCell>
-                          <div className="flex flex-col">
-                            <span className={`px-2 py-1 rounded text-sm ${
-                              asset.decarbonization === 'High' 
-                                ? 'bg-green-100 text-green-800' 
-                                : 'bg-yellow-100 text-yellow-800'
-                            }`}>
-                              {asset.decarbonization}
-                            </span>
-                            <span className="text-xs text-muted-foreground mt-1">
-                              Score: {asset.decarbonization_score}
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <span className={`px-2 py-1 rounded text-sm ${
-                            asset.liquidity_rating === 'high' 
-                              ? 'bg-green-100 text-green-800' 
-                              : asset.liquidity_rating === 'medium'
-                              ? 'bg-yellow-100 text-yellow-800'
-                              : 'bg-red-100 text-red-800'
-                          }`}>
-                            {asset.liquidity_rating.charAt(0).toUpperCase() + asset.liquidity_rating.slice(1)}
-                          </span>
-                        </TableCell>
+                        <TableCell>{asset.decarbonization}</TableCell>
+                        <TableCell>{asset.liquidity_rating.charAt(0).toUpperCase() + asset.liquidity_rating.slice(1)}</TableCell>
+                        <TableCell>{asset.source}</TableCell>
                         <TableCell>
                           <span className={`px-2 py-1 rounded text-sm ${
                             asset.matching_score >= 85 
