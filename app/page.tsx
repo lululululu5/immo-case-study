@@ -41,6 +41,15 @@ const transactions = [
     assets: 3,
     status: "Completed",
     date: "2024-03-01"
+  },
+  {
+    id: 4,
+    name: "Kreuzberg-Prenzlauer Portfolio",
+    type: "Acquisition",
+    value: 1250000,
+    assets: 2,
+    status: "Completed",
+    date: new Date().toISOString().split('T')[0] // Today's date
   }
 ]
 

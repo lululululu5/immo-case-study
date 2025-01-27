@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { StepOne } from './steps/step-one'
 import { StepTwo } from './steps/step-two'
 import { StepThree } from './steps/step-three'
@@ -48,6 +49,7 @@ const steps: Step[] = [
 ]
 
 export default function TransactionForm() {
+  const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState({
     // Step 1: Transaction Initiation
@@ -84,6 +86,21 @@ export default function TransactionForm() {
 
   const updateFormData = (newData: any) => {
     setFormData(newData)
+  }
+
+  const handleNavigation = () => {
+    if (currentStep === 6) {
+      // Update form data and redirect to dashboard
+      updateFormData({
+        ...formData,
+        status: 'completed'
+      })
+      setTimeout(() => {
+        router.push('/')
+      }, 500)
+    } else {
+      setCurrentStep(prev => Math.min(6, prev + 1))
+    }
   }
 
   const renderStep = () => {
@@ -145,10 +162,10 @@ export default function TransactionForm() {
             Previous
           </button>
           <button
-            onClick={() => setCurrentStep(prev => Math.min(6, prev + 1))}
+            onClick={handleNavigation}
             className="px-4 py-2 bg-blue-600 text-white rounded"
           >
-            {currentStep === 6 ? 'Finish' : 'Next'}
+            {currentStep === 6 ? 'Save' : 'Next'}
           </button>
         </div>
       </div>
