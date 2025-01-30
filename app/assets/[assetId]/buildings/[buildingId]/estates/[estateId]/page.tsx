@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Home, ChevronRight, Users, Calendar, Euro } from "lucide-react"
+import { Home, ChevronRight, Users, Calendar, Euro, TrendingUp, CreditCard, Percent } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -54,13 +54,35 @@ const mockEstate = {
   turnover_costs: 2800,
   unit_condition: "excellent",
   name: "Estate A",
-  image: "/mfh_estate_interior.jpg"
+  image: "/mfh_estate_interior.jpg",
+  financial_metrics: {
+    market_value: 850000,
+    price_per_sqm: 9942, // 850000 / 85.5
+    annual_rental_income: 17400, // 1450 * 12
+    potential_annual_income: 18000,
+    operating_expenses: 3480, // 20% of current rental income
+    net_operating_income: 13920,
+    rental_yield: 2.05, // (17400 / 850000) * 100
+    price_to_rent_ratio: 48.85, // 850000 / 17400
+    last_valuation_date: "2024-01-15",
+    historical_values: [
+      { date: "2023-01", value: 820000 },
+      { date: "2023-06", value: 835000 },
+      { date: "2024-01", value: 850000 }
+    ]
+  }
 }
 
 export default function EstateDetailsPage() {
   const params = useParams()
   // In a real app, we would fetch the estate data based on params.estateId
   
+  // Calculate additional metrics
+  const monthlyExpenses = mockEstate.financial_metrics.operating_expenses / 12
+  const monthlyNOI = mockEstate.financial_metrics.net_operating_income / 12
+  const occupancyRate = mockEstate.occupancy_status === 'occupied' ? 100 : 0
+  const valueAppreciation = ((mockEstate.financial_metrics.market_value - mockEstate.financial_metrics.historical_values[0].value) / mockEstate.financial_metrics.historical_values[0].value) * 100
+
   return (
     <div className="flex-1 space-y-6 p-8">
       {/* Breadcrumb */}
@@ -104,28 +126,91 @@ export default function EstateDetailsPage() {
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         <Card>
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{mockEstate.size} m²</div>
-            <p className="text-sm text-muted-foreground">Unit Size</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Market Value</p>
+                <div className="text-2xl font-bold">€{(mockEstate.financial_metrics.market_value / 1000).toFixed(0)}k</div>
+                <p className="text-xs text-muted-foreground mt-1">€{mockEstate.financial_metrics.price_per_sqm}/m²</p>
+              </div>
+              <Euro className="h-8 w-8 text-muted-foreground" />
+            </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold">€{mockEstate.current_rent}</div>
-            <p className="text-sm text-muted-foreground">Current Rent</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Monthly Rent</p>
+                <div className="text-2xl font-bold">€{mockEstate.current_rent}</div>
+                <p className="text-xs text-muted-foreground mt-1">Current rental income</p>
+              </div>
+              <TrendingUp className="h-8 w-8 text-muted-foreground" />
+            </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6">
-            <Badge variant={mockEstate.occupancy_status === 'occupied' ? 'default' : 'destructive'}>
-              {mockEstate.occupancy_status.charAt(0).toUpperCase() + mockEstate.occupancy_status.slice(1)}
-            </Badge>
-            <p className="text-sm text-muted-foreground mt-1">Status</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Monthly NOI</p>
+                <div className="text-2xl font-bold">€{monthlyNOI.toFixed(0)}</div>
+                <p className="text-xs text-muted-foreground mt-1">Net operating income</p>
+              </div>
+              <CreditCard className="h-8 w-8 text-muted-foreground" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Rental Yield</p>
+                <div className="text-2xl font-bold">{mockEstate.financial_metrics.rental_yield.toFixed(2)}%</div>
+                <p className="text-xs text-muted-foreground mt-1">Annual yield</p>
+              </div>
+              <Percent className="h-8 w-8 text-muted-foreground" />
+            </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Financial Performance */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Financial Performance</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm text-muted-foreground">Monthly Expenses</p>
+                <p className="text-2xl font-bold">€{monthlyExpenses.toFixed(0)}</p>
+                <p className="text-xs text-muted-foreground mt-1">Operating costs</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Price to Rent Ratio</p>
+                <p className="text-2xl font-bold">{mockEstate.financial_metrics.price_to_rent_ratio.toFixed(1)}</p>
+                <p className="text-xs text-muted-foreground mt-1">Market value / Annual rent</p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm text-muted-foreground">Value Appreciation</p>
+                <p className="text-2xl font-bold">{valueAppreciation.toFixed(1)}%</p>
+                <p className="text-xs text-muted-foreground mt-1">Past 12 months</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Last Valuation</p>
+                <p className="text-2xl font-bold">{new Date(mockEstate.financial_metrics.last_valuation_date).toLocaleDateString()}</p>
+                <p className="text-xs text-muted-foreground mt-1">Market value assessment</p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Tenant Profile */}
       <Card>
